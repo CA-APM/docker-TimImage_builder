@@ -44,10 +44,11 @@ configuration will not be impacted by this.
 
 
 #### Installation
-First of all you need to clone the repository. Get the link - and
-clone the repository:
 
-`~# git clone https://github.com/CA-APM//docker-TimImage_builder.git`
+First of all you need to get a copy of the repository or simply clone
+it. Get the link - and clone the repository:
+
+`~# git clone https://github.com/CA-APM/docker-TimImage_builder.git`
 
 The TIM Version the container will run is defined by the files
 provided in the timXX.x directory. The maker of the Docker-Image needs
