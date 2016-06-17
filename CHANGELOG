@@ -1,0 +1,19 @@
+=== CHANGELOG ==================================================
+Thu Jun 16 09:25:23 CEST 2016
+	- Adapted the README.md to CA marketplace requirements
+
+Wed Jun 15 10:35:23 CEST 2016
+	- Made the start-script aware of missing SPAN interface and
+	  already existing docker container of the same name
+	- Added License and Support information
+	- Moved from README to README.md
+	- Added new container detection and interface handling.
+	
+Mon Mar  7 15:27:10 CET 2016
+	- removed TIM Binaries and adapted the code to handle it.
+	
+Fri Jan 29 10:06:17 CET 201
+	- Supported TIM Versions 9.6 to 10.1
+	- Initial releasebuild
+
+=== GIT CHANGELOG ==============================================
