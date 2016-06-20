@@ -16,7 +16,7 @@ pre-configured data inside.
 
 ## APM version
 So far - the docker-builder has been tested with TIM from version 9.6
-up to 10.2.
+up to 10.3.
 
 ## Installation Instructions
 
