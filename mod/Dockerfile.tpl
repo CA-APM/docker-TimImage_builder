@@ -46,9 +46,13 @@ ADD mod/clean_rc.sh /clean_rc.sh
 RUN chmod +x /clean_rc.sh  
 RUN /clean_rc.sh 
 
-
 # Remove the TIM Software
 RUN rm -f /root/timInstall.bin /root/CA-APM-TIM-public_key.txt /root/ca-eula.en.txt
+
+# Take a backup of the Logs and Configuration directory
+RUN tar zcf /root/initial_TIM_config_logs.tar.gz /opt/CA/APM/tim/config /opt/CA/APM/tim/logs
+ADD mod/pre-tim.init /etc/init.d/pre-tim
+RUN /sbin/chkconfig --add pre-tim
 
 EXPOSE EXPOSEDPORTS
 
