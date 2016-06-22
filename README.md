@@ -151,9 +151,9 @@ The TIM Container will create various directories under the user's home
 
 | Inside the container | In the user's home directory |
 |----------------------|------------------------------|
-| /opt/CA/APM/tim/config | ~/docker/<CONTAINER>/config |
-| /opt/CA/APM/tim/logs | ~/docker/<CONTAINER>/logs |
-| /root/host_dir | ~/docker/<CONTAINER>/exchange |
+| /opt/CA/APM/tim/config | ~/docker/{CONTAINER}/config |
+| /opt/CA/APM/tim/logs | ~/docker/{CONTAINER}/logs |
+| /root/host_dir | ~/docker/{CONTAINER}/exchange |
 
 These directories are persistent. This means that in case you create a
 new TIM container with the same release, this directory's content will

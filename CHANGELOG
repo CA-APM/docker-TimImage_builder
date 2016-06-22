@@ -20,7 +20,8 @@ Fri Jan 29 10:06:17 CET 201
 	- Initial releasebuild
 
 === GIT CHANGELOG ==============================================
-* 2016-06-22 - (HEAD -> master, tag: v1.0-20, origin/master) Added consistent config and logs directory 
+* 2016-06-22 - (HEAD -> master, origin/master) Updated documentation 
+* 2016-06-22 - (tag: v1.0-20) Added consistent config and logs directory 
 * 2016-06-22 - Added pre-tim to be added for persistent config and log file directory to be accessible by admin from outside the container 
 * 2016-06-22 - Added persistent directories for config and log files. 
 * 2016-06-20 - Updated docs that tim 10.3 works also nicely. 
