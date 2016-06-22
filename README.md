@@ -1,4 +1,4 @@
-# docker-TimImage_builder rel1.0-19
+# docker-TimImage_builder rel1.0-20
 
 **Purpose**: Creates configuration files to create CA APM TIM docker Images and Containers  
   _by J. Mertin -- joerg.mertin(-AT-)ca.com_

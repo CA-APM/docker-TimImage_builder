@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# pre-tim : puts in place config/logs for presistent directory
+#
+# chkconfig: 2345 84 16
+# Description: This script checks if the TIM configuration and log directories are
+#              in sync with the real directories.
+#
+# Author:       Joerg Mertin <joerg.mertin@ca.com>
+#               
+#
+
+. /etc/init.d/functions
+
+
+# It is only require on start
+if [ "$1" != "start" ]; then
+   exit 0
+fi
+
+if [ ! -f /opt/CA/APM/tim/config/.config_sync ]
+then
+    if [ -f /root/initial_TIM_config_logs.tar.gz ]
+    then
+	# We need to get this out - as the original directory gets overwritten
+	tar zxf /root/initial_TIM_config_logs.tar.gz -C /
+	touch /opt/CA/APM/tim/config/.config_sync
+	echo "DO NOT REMOVE." >  /opt/CA/APM/tim/config/.config_sync
+	echo "If this file is removed - the next container start" >>  /opt/CA/APM/tim/config/.config_sync
+	echo "will overwrite all TIM configuration and log files." >>  /opt/CA/APM/tim/config/.config_sync
+	echo "*** DO NOT change the mode or ownership of the files in here." >>  /opt/CA/APM/tim/config/.config_sync
+	cp /opt/CA/APM/tim/config/.config_sync /opt/CA/APM/tim/logs/.log_sync
+    else
+	echo "backup files not found. Skipping operation"
+    fi
+fi
+
+
