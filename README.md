@@ -146,11 +146,23 @@ The `TIMImage_builder.sh` execution will create 2 scripts:
 - **tim9.7.0_shell.sh**: This one will drop you to a shell directly inside
   the running container
   
-The TIM Container will create one data-exchange directory in the
-user's home invoking the start of the container:
-`~/docker/<CONTAINER_NAME>`
-Inside the container, the directory will be: `/root/host_dir`
+The TIM Container will create various directories under the user's home
+ invoking the start of the container:
 
+| Inside the container | In the user's home directory |
+|----------------------|------------------------------|
+| /opt/CA/APM/tim/config | ~/docker/<CONTAINER>/config |
+| /opt/CA/APM/tim/logs | ~/docker/<CONTAINER>/logs |
+| /root/host_dir | ~/docker/<CONTAINER>/exchange |
+
+These directories are persistent. This means that in case you create a
+new TIM container with the same release, this directory's content will
+not be overwritten.
+
+If you want to upgrade the TIM while keeping the current
+configuration, all you need to do is create the new TIM image and
+adapt the "<CONTAINER>" to reflect the name of the next running
+instance.
 
 
 
