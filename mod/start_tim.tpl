@@ -36,7 +36,9 @@ then
 else
     # Start actual TIM container
     docker run --name ${CONTAINER} -d \
-	   -v ~/docker/${CONTAINER}:/root/host_dir \
+	   -v ~/docker/${CONTAINER}/config:/opt/CA/APM/tim/config \
+	   -v ~/docker/${CONTAINER}/logs:/opt/CA/APM/tim/logs \
+	   -v ~/docker/${CONTAINER}/exchange:/root/host_dir \
 	   -p PORTHTTP8:8080 \
 	   -p PORTHTTPS:443 \
 	   -p PORTHTTP1:81 \
@@ -74,5 +76,5 @@ sudo rm -f /var/run/netns/${PID}
 # Send a message out
 echo "======================================================================"
 echo "A data-exchange directory has been created:"
-echo "* On the Docker-Host: ~/docker/${CONTAINER}"
+echo "* On the Docker-Host: ~/docker/${CONTAINER}/exchange"
 echo "* In the $CONTAINER container: /root/host_dir"
