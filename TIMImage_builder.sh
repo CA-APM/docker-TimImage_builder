@@ -116,7 +116,7 @@ else
     fi
     
     echo "==============================================================="
-    echo -n ">>> Please copy & paste the right version: "
+    echo -n ">>> Please copy & paste the version to use: "
     read TIMVER
     while [ ! -x ${TIMVER}/timInstall.bin ]
     do
@@ -184,89 +184,115 @@ else
 	echo "*** $MSG"
     fi
     echo "CONTAINERNAME=$CONTAINERNAME" >> $CFGFILE
-    
+
     echo
     echo "==============================================================="
-    echo ">>> Which Docker Host physical network interface will be used "
-    echo ">>> as SPAN Port. Note that the interface will be made exclusively"
-    echo ">>> available to the container running the $TIMVER, and will not"
-    echo ">>> be usable by the Docker Host or any other container !"
-    echo ">>> Use ifconfig to identify a suitable interface !"
-    echo -n "Which interface to use: [No Default]: "
-    read HOSTDEV
-    log "Host Device: $HOSTDEV"
-    echo "HOSTDEV=$HOSTDEV" >> $CFGFILE
-    
-    
-    echo 
-    echo "==============================================================="
-    echo "   For the following, keep in mind that the TIM uses by default"
-    echo "   port 80, 81 8080 and 443. These are the ports the TIM will"
-    echo "   run inside the Docker container. If any of these ports is "
-    echo "   already in useon the host system, it cannot be used by the"
-    echo "   docker-proxy."
-    
-    echo
-    echo "==============================================================="
-    echo -n ">>> Which port do you want to map the HTTP Port 80 [80]: "
-    read PORTHTTPtmp
-    RESP=$PORTHTTPtmp
-    PORTHTTP=${PORTHTTPtmp:=80}
-    MSG="Port 80 mapped to $PORTHTTP"
+    echo "Container Network mode"
+    echo "Depending on the location the container will be installed, it can"
+    echo "be necessary to separate the container from the running host."
+    echo " - \"host\": all networking from the running host will be made"
+    echo "    available to the inside of the container."
+    echo " - \"secured\": the container will get its own network, and one"
+    echo "    dedicated network interface will be hijacked from the host"
+    echo "    and into the container as SPAN port."
+    echo -n ">>> Container network mode [host|secured]: "
+    read NMODEtmp
+    RESP=$NMODEtmp
+    NMODE=${NMODEtmp:=secured}
+    MSG="Network mode set to: $NMODE"
     log $MSG
     if [ -z "$RESP" ]
     then
 	echo "*** $MSG"
     fi
-    echo "PORTHTTP=$PORTHTTP" >> $CFGFILE
+    echo "NMODE=$NMODE" >> $CFGFILE
+
     
-    
-    echo
-    echo "==============================================================="
-    echo -n ">>> Which port do you want to map the HTTP Port 8080 [8080]: "
-    read PORTHTTP8tmp
-    RESP=$PORTHTTP8tmp
-    PORTHTTP8=${PORTHTTP8tmp:=8080}
-    MSG="Port 8080 mapped to $PORTHTTP8"
-    log $MSG
-    if [ -z "$RESP" ]
+    if [ $NMODE ]
     then
-	echo "*** $MSG"
+	echo
+	echo "==============================================================="
+	echo ">>> Which Docker Host physical network interface will be used "
+	echo ">>> as SPAN Port. Note that the interface will be made exclusively"
+	echo ">>> available to the container running the $TIMVER, and will not"
+	echo ">>> be usable by the Docker Host or any other container !"
+	echo ">>> Use ifconfig to identify a suitable interface !"
+	echo -n "Which interface to use: [No Default]: "
+	read HOSTDEV
+	log "Host Device: $HOSTDEV"
+	echo "HOSTDEV=$HOSTDEV" >> $CFGFILE
+	
+	
+	echo 
+	echo "==============================================================="
+	echo "   For the following, keep in mind that the TIM uses by default"
+	echo "   port 80, 81 8080 and 443. These are the ports the TIM will"
+	echo "   run inside the Docker container. If any of these ports is "
+	echo "   already in useon the host system, it cannot be used by the"
+	echo "   docker-proxy."
+	
+	echo
+	echo "==============================================================="
+	echo -n ">>> Which port do you want to map the HTTP Port 80 [80]: "
+	read PORTHTTPtmp
+	RESP=$PORTHTTPtmp
+	PORTHTTP=${PORTHTTPtmp:=80}
+	MSG="Port 80 mapped to $PORTHTTP"
+	log $MSG
+	if [ -z "$RESP" ]
+	then
+	    echo "*** $MSG"
+	fi
+	echo "PORTHTTP=$PORTHTTP" >> $CFGFILE
+	
+	
+	echo
+	echo "==============================================================="
+	echo -n ">>> Which port do you want to map the HTTP Port 8080 [8080]: "
+	read PORTHTTP8tmp
+	RESP=$PORTHTTP8tmp
+	PORTHTTP8=${PORTHTTP8tmp:=8080}
+	MSG="Port 8080 mapped to $PORTHTTP8"
+	log $MSG
+	if [ -z "$RESP" ]
+	then
+	    echo "*** $MSG"
+	fi
+	echo "PORTHTTP8=$PORTHTTP8" >> $CFGFILE
+	
+	echo
+	echo "==============================================================="
+	echo -n ">>> Which port do you want to map the HTTP Port 81 [81]: "
+	read PORTHTTP1tmp
+	RESP=$PORTHTTP1tmp
+	PORTHTTP1=${PORTHTTP1tmp:=81}
+	MSG="Port 81 mapped to $PORTHTTP1"
+	log $MSG
+	if [ -z "$RESP" ]
+	then
+	    echo "*** $MSG"
+	fi
+	echo "PORTHTTP1=$PORTHTTP1" >> $CFGFILE
+	
+	echo
+	echo "==============================================================="
+	echo -n ">>> Which port do you want to map the HTTPS Port 443 [8443]: "
+	read PORTHTTPStmp
+	RESP=$PORTHTTPStmp
+	PORTHTTPS=${PORTHTTPStmp:=8443}
+	MSG="Port 8443 mapped to $PORTHTTPS"
+	log $MSG
+	if [ -z "$RESP" ]
+	then
+	    echo "*** $MSG"
+	fi
+	echo "PORTHTTPS=$PORTHTTPS" >> $CFGFILE
+	
+	MSG="Moving Configuration file to new name failed"
+	mv $CFGFILE cfgs/${CONTAINERNAME}.cfg
+	errlvl=$?
+	errors
     fi
-    echo "PORTHTTP8=$PORTHTTP8" >> $CFGFILE
-    
-    echo
-    echo "==============================================================="
-    echo -n ">>> Which port do you want to map the HTTP Port 81 [81]: "
-    read PORTHTTP1tmp
-    RESP=$PORTHTTP1tmp
-    PORTHTTP1=${PORTHTTP1tmp:=81}
-    MSG="Port 81 mapped to $PORTHTTP1"
-    log $MSG
-    if [ -z "$RESP" ]
-    then
-	echo "*** $MSG"
-    fi
-    echo "PORTHTTP1=$PORTHTTP1" >> $CFGFILE
-    
-    echo
-    echo "==============================================================="
-    echo -n ">>> Which port do you want to map the HTTPS Port 443 [8443]: "
-    read PORTHTTPStmp
-    RESP=$PORTHTTPStmp
-    PORTHTTPS=${PORTHTTPStmp:=8443}
-    MSG="Port 8443 mapped to $PORTHTTPS"
-    log $MSG
-    if [ -z "$RESP" ]
-    then
-	echo "*** $MSG"
-    fi
-    echo "PORTHTTPS=$PORTHTTPS" >> $CFGFILE
-    
-    MSG="Moving Configuration file to new name failed"
-    mv $CFGFILE cfgs/${CONTAINERNAME}.cfg
-    errlvl=$?
-    errors
     
 fi
 
@@ -278,15 +304,19 @@ echo -e "TIM Version:\t\t$TIMVER"
 echo -e "TIM Workers:\t\t$WORKER"
 echo -e "Image name:\t\t$IMAGENAME"
 echo -e "Exposed ports:\t\t$EXPOSEDPORTS"
-
+echo -e "Network mode:\t\t$NMODE"
 # Required VARS in start_tim.sh
 echo -e "Container Name:\t\t$CONTAINERNAME"
-echo -e "Host SPAN Int.:\t\t$HOSTDEV"
-echo -e "Port 80 mapped to:\t$PORTHTTP"
-echo -e "Port 81 mapped to:\t$PORTHTTP1"
-echo -e "Port 8080 mapped to:\t$PORTHTTP8"
-echo -e "Port 8443 mapped to:\t$PORTHTTPS"
 
+if [ "$NMODE" == "secured" ]
+then
+    echo -e "Host SPAN Int.:\t\t$HOSTDEV"
+    echo -e "Port 80 mapped to:\t$PORTHTTP"
+    echo -e "Port 81 mapped to:\t$PORTHTTP1"
+    echo -e "Port 8080 mapped to:\t$PORTHTTP8"
+    echo -e "Port 8443 mapped to:\t$PORTHTTPS"
+fi
+    
 echo
 echo "==============================================================="
 echo -n ">>> Proceed [y/n]: "
@@ -335,40 +365,58 @@ errors
 echo " OK. "
 
 # ===================================
-echo -n "*** Creating Container start script: "
-MSG="Creating start_tim.sh script failed"
-sed -e s#CONTAINERNAME#$CONTAINERNAME#g mod/start_tim.tpl > start_tim.tmp
-errlvl=$?
-errors
-sed -i s#IMAGENAME#$IMAGENAME#g start_tim.tmp
-errlvl=$?
-errors
-sed -i s#PORTHTTP1#$PORTHTTP1#g start_tim.tmp
-errlvl=$?
-errors
-sed -i s#PORTHTTP8#$PORTHTTP8#g start_tim.tmp
-errlvl=$?
-errors
-sed -i s#PORTHTTPS#$PORTHTTPS#g start_tim.tmp
-errlvl=$?
-errors
-sed -i s#PORTHTTP#$PORTHTTP#g start_tim.tmp
-errlvl=$?
-errors
-sed -i s#HOSTDEV#$HOSTDEV#g start_tim.tmp
-errlvl=$?
-errors
-sed -i s#TIMVER#$TIMVER#g start_tim.tmp
-errlvl=$?
-errors
-mv start_tim.tmp start_${CONTAINERNAME}.sh
-errlvl=$?
-errors
-chmod 755 start_${CONTAINERNAME}.sh
-errlvl=$?
-errors
-echo " OK. "
+if [ "$NMODE" == "secured" ]
+then
+    # Secured network mode
+    echo -n "*** Creating Container start script: "
+    MSG="Creating start_tim.sh script failed"
+    sed -e s#CONTAINERNAME#$CONTAINERNAME#g mod/start_tim_secured.tpl > start_tim.tmp
+    errlvl=$?
+    errors
+    sed -i s#IMAGENAME#$IMAGENAME#g start_tim.tmp
+    errlvl=$?
+    errors
+    sed -i s#PORTHTTP1#$PORTHTTP1#g start_tim.tmp
+    errlvl=$?
+    errors
+    sed -i s#PORTHTTP8#$PORTHTTP8#g start_tim.tmp
+    errlvl=$?
+    errors
+    sed -i s#PORTHTTPS#$PORTHTTPS#g start_tim.tmp
+    errlvl=$?
+    errors
+    sed -i s#PORTHTTP#$PORTHTTP#g start_tim.tmp
+    errlvl=$?
+    errors
+    sed -i s#HOSTDEV#$HOSTDEV#g start_tim.tmp
+    errlvl=$?
+    errors
+    mv start_tim.tmp start_${CONTAINERNAME}.sh
+    errlvl=$?
+    errors
+    chmod 755 start_${CONTAINERNAME}.sh
+    errlvl=$?
+    errors
+    echo " OK. "
+else
+    # Host network mode
+    echo -n "*** Creating Container start script: "
+    MSG="Creating start_tim.sh script failed"
+    sed -e s#CONTAINERNAME#$CONTAINERNAME#g mod/start_tim_host.tpl > start_tim.tmp
+    errlvl=$?
+    errors
+    sed -i s#IMAGENAME#$IMAGENAME#g start_tim.tmp
+    errlvl=$?
+    errors
+    mv start_tim.tmp start_${CONTAINERNAME}.sh
+    errlvl=$?
+    errors
+    chmod 755 start_${CONTAINERNAME}.sh
+    errlvl=$?
+    errors
+    echo " OK. "
 
+fi
 # ===================================
 echo -n "*** Creating Container access script: "
 MSG="Creating tim_shell.sh script failed"
