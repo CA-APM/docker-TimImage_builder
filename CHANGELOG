@@ -1,4 +1,7 @@
 === CHANGELOG ==================================================
+Fri Jun 24 14:53:21 CEST 2016
+	- Added support for host network mode.
+
 Wed Jun 22 16:33:57 CEST 2016
 	- Added support for persistent config and logs directories.
 
@@ -11,16 +14,19 @@ Wed Jun 15 10:35:23 CEST 2016
 	- Added License and Support information
 	- Moved from README to README.md
 	- Added new container detection and interface handling.
-	
+
 Mon Mar  7 15:27:10 CET 2016
 	- removed TIM Binaries and adapted the code to handle it.
-	
+
 Fri Jan 29 10:06:17 CET 201
 	- Supported TIM Versions 9.6 to 10.1
 	- Initial releasebuild
 
 === GIT CHANGELOG ==============================================
-* 2016-06-22 - (HEAD -> master, origin/master) Updated documentation 
+* 2016-06-24 - (HEAD -> master) Added support for Docker host mode. 
+* 2016-06-24 - Added support for host network mode 
+* 2016-06-22 - (origin/master) HTML tags don't work in README.md file. 
+* 2016-06-22 - Updated documentation 
 * 2016-06-22 - (tag: v1.0-20) Added consistent config and logs directory 
 * 2016-06-22 - Added pre-tim to be added for persistent config and log file directory to be accessible by admin from outside the container 
 * 2016-06-22 - Added persistent directories for config and log files. 

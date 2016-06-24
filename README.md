@@ -1,4 +1,4 @@
-# docker-TimImage_builder rel1.0-20
+# docker-TimImage_builder rel1.0-21
 
 **Purpose**: Creates configuration files to create CA APM TIM docker Images and Containers  
   _by J. Mertin -- joerg.mertin(-AT-)ca.com_
@@ -67,12 +67,16 @@ You can have more than one version in the base directory. Make sure to
 edit the ca-eula.en.txt file and set the Eula Acceptance to
 **CA-EULA=reject** or the installation of the TIM will fail.
 
-This docker-TimImage_builder provides a CLI UI to choose the initial setup
-of the TIM docker build, letting the user choose between different
-versions, set the name of the image-build and the container name, as
-the ports that will be exposed. By default - the TIM docker will use
-the internal ports 80, 81, 8080 and 8433, which eventually need to be
-remapped.
+This docker-TimImage_builder provides a CLI UI to choose the initial
+setup of the TIM docker build, letting the user choose between
+different versions, set the name of the image-build and the container
+name. In case of the secured network mode, will set the ports that
+will be exposed. By default - the TIM docker will use the internal
+ports 80, 81, 8080 and 8433, which eventually need to be remapped.  In
+"host" network mode, the current network configuration of the host
+will be made available to the docker container. This will be very
+practical in case one wants to monitor a webserver running on the same
+hardware.
 
 #### For Interactive mode, just call:  
 `~# ./TIMImage_builder.sh`
@@ -93,6 +97,7 @@ TIM Version:            tim10.2
 TIM Workers:            2
 Image name:             caapm/tim10.2
 Exposed ports:          8080 8443 81 80
+Network mode:           secured
 Container Name:         tim10.2
 Host SPAN Int.:         dummy0
 Port 80 mapped to:      80
@@ -140,8 +145,7 @@ The `TIMImage_builder.sh` execution will create 2 scripts:
   * In case the container does not yet exist, it will be built and
     started.
   * In case it already exists, the existing instance will be started
-    and the configured network interface hijacked into the docker
-    container.
+    and networking setup according to request
 
 - **tim9.7.0_shell.sh**: This one will drop you to a shell directly inside
   the running container
@@ -167,13 +171,13 @@ instance.
 
 
 ## Limitations
-* Currently, the container-start script will only work on a Linux
-  Docker Server - as the syntax used to Hijack the SPAN Interface is
-  specific to each OS.
+* Currently, the container-start script using the secured network mode
+  will only work on a Linux Docker Server - as the syntax used to
+  Hijack the SPAN Interface is specific to each OS.
 
-* The network interface used for SPAN Port is exclusively assigned to
-  a docker container and cannot be used by any other process/docker
-  container.
+* In case the "secured" network mode is used, the network interface
+  used for SPAN Port is exclusively assigned to a docker container and
+  cannot be used by any other process/docker container.
 
 ## Debugging and Troubleshooting
 Troubleshooting needs to be done as on a regular TIM.  
