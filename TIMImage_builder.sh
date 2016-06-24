@@ -208,7 +208,7 @@ else
     echo "NMODE=$NMODE" >> $CFGFILE
 
     
-    if [ $NMODE ]
+    if [ "$NMODE" == "secured" ]
     then
 	echo
 	echo "==============================================================="
@@ -287,13 +287,13 @@ else
 	    echo "*** $MSG"
 	fi
 	echo "PORTHTTPS=$PORTHTTPS" >> $CFGFILE
-	
-	MSG="Moving Configuration file to new name failed"
-	mv $CFGFILE cfgs/${CONTAINERNAME}.cfg
-	errlvl=$?
-	errors
     fi
-    
+	
+    MSG="Moving Configuration file to new name failed"
+    mv $CFGFILE cfgs/${CONTAINERNAME}.cfg
+    errlvl=$?
+    errors
+
 fi
 
 echo 
