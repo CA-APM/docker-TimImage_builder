@@ -38,6 +38,9 @@ RUN /root/timInstallRPM.sh
 # Limit the number of TIM workers to be started
 RUN sed -i 's/^#workers N/workers WORKER/g' /opt/CA/APM/tim/config/balancer.cnf && sed -i 's/6.5/6.8/g' /etc/centos-release
 
+# We will need to change the Listen port on the https configuration
+RUN sed -i 's/^Listen 80/Listen PORTHTTP/g' /etc/httpd/conf/httpd.conf && sed -i 's/^Listen 443/Listen PORTHTTPS/g' /etc/httpd/conf.d/ssl.conf
+
 # Added cronjob for yum update / to keep the image updated (OS Security fixes)
 ADD mod/yum.cron /etc/cron.d
 
@@ -53,6 +56,8 @@ RUN rm -f /root/timInstall.bin /root/CA-APM-TIM-public_key.txt /root/ca-eula.en.
 RUN tar zcf /root/initial_TIM_config_logs.tar.gz /opt/CA/APM/tim/config /opt/CA/APM/tim/logs
 ADD mod/pre-tim.init /etc/init.d/pre-tim
 RUN /sbin/chkconfig --add pre-tim
+
+
 
 EXPOSE EXPOSEDPORTS
 
