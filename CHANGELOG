@@ -23,9 +23,11 @@ Fri Jan 29 10:06:17 CET 201
 	- Initial releasebuild
 
 === GIT CHANGELOG ==============================================
-* 2016-06-28 - (HEAD -> master) Added port-selection for TIM in host-mode. 
+* 2016-06-28 - (HEAD -> master, origin/master) Replaced < Tags 
+* 2016-06-28 - Updated documentation, added Security section 
+* 2016-06-28 - Added port-selection for TIM in host-mode. 
 * 2016-06-28 - Adapted the httpd configuration inside of the container 
-* 2016-06-24 - (tag: v1.0-21, origin/master) Added network/host mode option, updated documentation to reflect the changes. 
+* 2016-06-24 - (tag: v1.0-21) Added network/host mode option, updated documentation to reflect the changes. 
 * 2016-06-24 - Added support for Docker host mode. 
 * 2016-06-24 - Added support for host network mode 
 * 2016-06-22 - HTML tags don't work in README.md file. 

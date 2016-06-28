@@ -169,7 +169,7 @@ not be overwritten.
 
 If you want to upgrade the TIM while keeping the current
 configuration, all you need to do is create the new TIM image and
-adapt the "{ONTAINER}" to reflect the name of the next running
+adapt the "{CONTAINER}" to reflect the name of the next running
 instance.
 
 
@@ -191,9 +191,10 @@ _Note: for entering the TIM Container, use the provided `tim9.7.0_shell.sh` scri
 ## Security
 
 The TIM Container provides no active security. However, during
-installation, the latest fixes for underlying OS are applied. At the
-same time - a cron-job is installed to update the underlying OS on a
-regular base.  
+installation, the latest fixes for the underlying OS are applied. At
+the same time - a cron-job is installed to update the underlying OS on
+a regular base.
+
 In case this behavior is not wanted, or the container has no access to
 regular centos repositories, please remove the `yum.cron` file, and
 restart crond.  
@@ -202,8 +203,8 @@ restart crond.
 [root@antigone cron.d]# service crond reload
 ```  
 _Note: removing crond alltogether can be done but is not advised as
-it also takes care of all the daily/weekly/monthly logfile
-maintenante._
+it also takes care of all the daily/weekly/monthly system logfile
+maintenance._
 
 
 ## Legal notice: binaries not included
