@@ -76,7 +76,11 @@ ports 80, 81, 8080 and 8433, which eventually need to be remapped.  In
 "host" network mode, the current network configuration of the host
 will be made available to the docker container. This will be very
 practical in case one wants to monitor a webserver running on the same
-hardware.
+hardware.  
+_Note: in case you want to access the container using https, you will
+have to provide a valid private key and certificate. Else the server
+will refuse secured accesses._
+
 
 #### For Interactive mode, just call:  
 `~# ./TIMImage_builder.sh`
@@ -182,6 +186,24 @@ instance.
 ## Debugging and Troubleshooting
 Troubleshooting needs to be done as on a regular TIM.  
 _Note: for entering the TIM Container, use the provided `tim9.7.0_shell.sh` script._
+
+
+## Security
+
+The TIM Container provides no active security. However, during
+installation, the latest fixes for underlying OS are applied. At the
+same time - a cron-job is installed to update the underlying OS on a
+regular base.  
+In case this behavior is not wanted, or the container has no access to
+regular centos repositories, please remove the `yum.cron` file, and
+restart crond.  
+```
+[root@antigone cron.d]# rm -f /etc/cron.d/yum.cron 
+[root@antigone cron.d]# service crond reload
+```  
+_Note: removing crond alltogether can be done but is not advised as
+it also takes care of all the daily/weekly/monthly logfile
+maintenante._
 
 
 ## Legal notice: binaries not included
