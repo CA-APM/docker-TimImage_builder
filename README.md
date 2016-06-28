@@ -169,7 +169,7 @@ not be overwritten.
 
 If you want to upgrade the TIM while keeping the current
 configuration, all you need to do is create the new TIM image and
-adapt the "<CONTAINER>" to reflect the name of the next running
+adapt the "{ONTAINER}" to reflect the name of the next running
 instance.
 
 
