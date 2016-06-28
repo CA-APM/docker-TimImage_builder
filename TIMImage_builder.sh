@@ -210,6 +210,8 @@ else
     
     if [ "$NMODE" == "secured" ]
     then
+	# Secured Mode - we can configure the docker proxy setup.
+
 	echo
 	echo "==============================================================="
 	echo ">>> Which Docker Host physical network interface will be used "
@@ -287,6 +289,60 @@ else
 	    echo "*** $MSG"
 	fi
 	echo "PORTHTTPS=$PORTHTTPS" >> $CFGFILE
+
+    else
+
+	# Host Mode - we can configure the TIM Ports.
+
+	echo 
+	echo "==============================================================="
+	echo "   For the following, keep in mind that the TIM uses by default"
+	echo "   port 80, 81 8080 and 443. You now have the possibility to"
+	echo "   change these ports. Make sure you reflect these ports in"
+	echo "   the rest of the setup (EM/Collector/TESS etc.)"
+	
+	echo
+	echo "==============================================================="
+	echo -n ">>> Which port do you want to map the HTTP Port 80 [80]: "
+	read PORTHTTPtmp
+	RESP=$PORTHTTPtmp
+	PORTHTTP=${PORTHTTPtmp:=80}
+	MSG="Port 80 mapped to $PORTHTTP"
+	log $MSG
+	if [ -z "$RESP" ]
+	then
+	    echo "*** $MSG"
+	fi
+	echo "PORTHTTP=$PORTHTTP" >> $CFGFILE
+	
+	echo
+	echo "==============================================================="
+	echo -n ">>> Which port do you want to map the HTTP Port 81 [81]: "
+	read PORTHTTP1tmp
+	RESP=$PORTHTTP1tmp
+	PORTHTTP1=${PORTHTTP1tmp:=81}
+	MSG="Port 81 mapped to $PORTHTTP1"
+	log $MSG
+	if [ -z "$RESP" ]
+	then
+	    echo "*** $MSG"
+	fi
+	echo "PORTHTTP1=$PORTHTTP1" >> $CFGFILE
+	
+	echo
+	echo "==============================================================="
+	echo -n ">>> Which port do you want to map the HTTPS Port 443 [443]: "
+	read PORTHTTPStmp
+	RESP=$PORTHTTPStmp
+	PORTHTTPS=${PORTHTTPStmp:=443}
+	MSG="Port 443 mapped to $PORTHTTPS"
+	log $MSG
+	if [ -z "$RESP" ]
+	then
+	    echo "*** $MSG"
+	fi
+	echo "PORTHTTPS=$PORTHTTPS" >> $CFGFILE
+
     fi
 	
     MSG="Moving Configuration file to new name failed"
@@ -295,6 +351,11 @@ else
     errors
 
 fi
+
+
+# Reconfigure the exposed Ports
+EXPOSEDPORTS="$PORTHTTP $PORTHTTP1 $PORTHTTPS $PORTHTTP8"
+
 
 echo 
 echo ">>> Options for this Docker Image Build"
@@ -315,6 +376,10 @@ then
     echo -e "Port 81 mapped to:\t$PORTHTTP1"
     echo -e "Port 8080 mapped to:\t$PORTHTTP8"
     echo -e "Port 8443 mapped to:\t$PORTHTTPS"
+else
+    echo -e "Port 80 changed to:\t$PORTHTTP"
+    echo -e "Port 81 changed to:\t$PORTHTTP1"
+    echo -e "Port 8443 changed to:\t$PORTHTTPS"
 fi
     
 echo
@@ -328,19 +393,39 @@ then
     errors
 fi
 
-# ===================================
-echo -n "*** Generating CA_AUTOMATION file: "
-MSG="Creating CA_AUTOMATION file failed"
-echo "export PRIVATE_HTTPD=0" > CA_AUTOMATION
-errlvl=$?
-echo "export HTTP_PORT=80" >> CA_AUTOMATION
-echo "export HTTPS_PORT=8443" >> CA_AUTOMATION
-echo "export TIM_PORT=81" >> CA_AUTOMATION
-echo "export MOD_FIREWALL=0" >> CA_AUTOMATION
-echo "export INSTALL_TYPE=F" >> CA_AUTOMATION
-echo "export UPGRADE_KEEP_SETTINGS=0" >> CA_AUTOMATION
-echo " OK. "
+if [ "$NMODE" == "secured" ]
+then
 
+    # ===================================
+    echo -n "*** Generating CA_AUTOMATION file: "
+    MSG="Creating CA_AUTOMATION file failed"
+    echo "export PRIVATE_HTTPD=0" > CA_AUTOMATION
+    errlvl=$?
+    echo "export HTTP_PORT=80" >> CA_AUTOMATION
+    echo "export HTTPS_PORT=8443" >> CA_AUTOMATION
+    echo "export TIM_PORT=81" >> CA_AUTOMATION
+    echo "export MOD_FIREWALL=0" >> CA_AUTOMATION
+    echo "export INSTALL_TYPE=F" >> CA_AUTOMATION
+    echo "export UPGRADE_KEEP_SETTINGS=0" >> CA_AUTOMATION
+    echo " OK. "
+
+else
+
+    # ===================================
+    echo -n "*** Generating CA_AUTOMATION file: "
+    MSG="Creating CA_AUTOMATION file failed"
+    echo "export PRIVATE_HTTPD=0" > CA_AUTOMATION
+    errlvl=$?
+    echo "export HTTP_PORT=$PORTHTTP" >> CA_AUTOMATION
+    echo "export HTTPS_PORT=$PORTHTTPS" >> CA_AUTOMATION
+    echo "export TIM_PORT=$PORTHTTP1" >> CA_AUTOMATION
+    echo "export MOD_FIREWALL=0" >> CA_AUTOMATION
+    echo "export INSTALL_TYPE=F" >> CA_AUTOMATION
+    echo "export UPGRADE_KEEP_SETTINGS=0" >> CA_AUTOMATION
+    echo " OK. "
+
+fi
+  
 # ===================================
 echo -n "*** Generating Dockerfile: "
 MSG="Creating Dockerfile failed"
@@ -353,6 +438,13 @@ errors
 sed -i "s/WORKER/$WORKER/g" Dockerfile.tmp
 errlvl=$?
 errors
+sed -i "s/PORTHTTPS/$PORTHTTPS/g" Dockerfile.tmp
+errlvl=$?
+errors
+sed -i "s/PORTHTTP/$PORTHTTP/g" Dockerfile.tmp
+errlvl=$?
+errors
+
 
 # Special case for TIM 9.6.1 or 9.6.0
 if [ `echo $TIMVER | grep -c "^tim9.6"` -gt 0 ]
