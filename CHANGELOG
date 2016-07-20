@@ -23,7 +23,9 @@ Fri Jan 29 10:06:17 CET 201
 	- Initial releasebuild
 
 === GIT CHANGELOG ==============================================
-* 2016-06-28 - (HEAD -> master, origin/master) Replaced < Tags 
+* 2016-07-20 - (HEAD -> master) Fixed a race condition, where HTTP export ports where also adapted in secure mode (not required, as all is handled through the proxies) 
+* 2016-06-28 - (origin/master) Spellchecking fixes 
+* 2016-06-28 - Replaced < Tags 
 * 2016-06-28 - Updated documentation, added Security section 
 * 2016-06-28 - Added port-selection for TIM in host-mode. 
 * 2016-06-28 - Adapted the httpd configuration inside of the container 

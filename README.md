@@ -1,4 +1,4 @@
-# docker-TimImage_builder rel1.0-21
+# docker-TimImage_builder rel1.0-22
 
 **Purpose**: Creates configuration files to create CA APM TIM docker Images and Containers  
   _by J. Mertin -- joerg.mertin(-AT-)ca.com_
@@ -86,9 +86,9 @@ will refuse secured accesses._
 `~# ./TIMImage_builder.sh`
 
 _Note: Every interactive mode will create a configuration file in the
-"cfgs" directory. You can then use it for Automated mode._
+"cfgs" directory. You can then use it for the *automated* mode._
 
-#### Automated mode, provide a configuration file as argument.  
+#### Automated mode: provide a configuration file as argument  
 `~# ./TIMImage_builder.sh cfgs/tim9.7.0.cfg`
 
 In both cases, the script will show the current settings and ask for
@@ -118,24 +118,21 @@ the actual docker image, and provide a start script to start the
 Container, and a script to enter the container.
 
 The TIM software will be installed in unattended mode using the defaults
-as provided by the **CA_AUTOMATION**.
+as provided by the **CA_AUTOMATION**. 
 
 
 #### Usage Instructions
 
 Every time the `TIMImage_builder.sh` is executed, a CentOS 6.8 OS
-image is built, a complete RPM update is performed prior TIM
-installation providing the most up to date and secure environment for
-the TIM process to run in.
-
-_Note: A cron-job is also running inside the TIM Container to keep
-the RPM packages up to date and security fixes applied over time!_
+image is built, a complete RPM update is performed before the actual
+TIM installation, providing an up to date and secure environment
+for the TIM process to run in.
 
 The main issue for the TIM to actually run inside a Docker
 environment, is to provide apmpacket the data-flow the TIM workers are
 supposed to monitor. Docker however has been designed to share
-resources. This is the reason the Admin starting the TIM Container
-will have insert the SPAN Device to the Docker-Container, or use the
+resources. This is the reason the Admin starting the the TIM Container
+will have insert the SPAN Device into the Docker-Container, or use the
 generated `start_tim.sh` shell script so the container can directly
 "hijack" the defined SPAN interfaces on the running host.
 
@@ -143,13 +140,15 @@ The `TIMImage_builder.sh` execution will create 2 scripts:
 
 - **start_tim9.7.0.sh**: This script will start the docker container as
   per the name.  
-  _Note:  the configured SPAN interface will be hijacked
-  from the docker host and made exclusively available to the inside of
-  the TIM container._ 
-  * In case the container does not yet exist, it will be built and
-    started.
-  * In case it already exists, the existing instance will be started
-    and networking setup according to request
+
+  _Note: in *secured* mode, the configured SPAN interface will be
+   hijacked from the docker host and made exclusively available to the
+   inside of the TIM container. The host mode will share the host
+   network inside the container._
+   * In case the container does not yet exist, it will be built and
+     started.
+   * In case it already exists, the existing instance will be started
+     and networking setup according to request.
 
 - **tim9.7.0_shell.sh**: This one will drop you to a shell directly inside
   the running container
@@ -170,8 +169,13 @@ not be overwritten.
 If you want to upgrade the TIM while keeping the current
 configuration, all you need to do is create the new TIM image and
 adapt the "{CONTAINER}" to reflect the name of the next running
-instance.
+instance. Do the upgrade in this specific order - example based on
+tim10.1 to tim10.3:
 
+1. Create the new Image version tim10.3
+2. stop the current image tim10.1 with `docker stop tim10.1`
+3. mv the old configuration directory to the new one with: `mv tim10.1 tim10.3`
+4. start the new container with the provided start-script: `./start_tim10.3.sh`
 
 
 ## Limitations
