@@ -409,6 +409,8 @@ then
     echo "export UPGRADE_KEEP_SETTINGS=0" >> CA_AUTOMATION
     echo " OK. "
 
+    DOCKERFILE=Dockerfile.tpl.secure
+    
 else
 
     # ===================================
@@ -424,12 +426,14 @@ else
     echo "export UPGRADE_KEEP_SETTINGS=0" >> CA_AUTOMATION
     echo " OK. "
 
+    DOCKERFILE=Dockerfile.tpl.host
+    
 fi
   
 # ===================================
 echo -n "*** Generating Dockerfile: "
 MSG="Creating Dockerfile failed"
-sed -e "s/TIMVER/$TIMVER/g" mod/Dockerfile.tpl > Dockerfile.tmp
+sed -e "s/TIMVER/$TIMVER/g" mod/${DOCKERFILE} > Dockerfile.tmp
 errlvl=$?
 errors
 sed -i "s/EXPOSEDPORTS/$EXPOSEDPORTS/g" Dockerfile.tmp
