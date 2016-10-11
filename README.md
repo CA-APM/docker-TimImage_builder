@@ -1,4 +1,4 @@
-# docker-TimImage_builder rel1.0-22
+# docker-TimImage_builder rel1.0-23
 
 **Purpose**: Creates configuration files to create CA APM TIM docker Images and Containers  
   _by J. Mertin -- joerg.mertin(-AT-)ca.com_
@@ -16,7 +16,7 @@ pre-configured data inside.
 
 ## APM version
 So far - the docker-builder has been tested with TIM from version 9.6
-up to 10.3.
+up to 10.5.
 
 ## Installation Instructions
 
