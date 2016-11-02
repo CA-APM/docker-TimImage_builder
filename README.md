@@ -54,7 +54,7 @@ The TIM Version the container will run is defined by the files
 provided in the timXX.x directory. The maker of the Docker-Image needs
 to download the TIM files from CA Support site (Download section),
 untar the version for CentOS/RedHat 6.x and place the obtained files
-into the appropriate version directory, example "tim10.1":
+into the appropriate version directory, example "tim10.2":
 
 ```
 admin@antigone:~/docker/docker-TimImage_builder$ ls -l tim10.2/*  
@@ -89,7 +89,7 @@ _Note: Every interactive mode will create a configuration file in the
 "cfgs" directory. You can then use it for the *automated* mode._
 
 #### Automated mode: provide a configuration file as argument  
-`~# ./TIMImage_builder.sh cfgs/tim9.7.0.cfg`
+`~# ./TIMImage_builder.sh cfgs/tim10.2.0.cfg`
 
 In both cases, the script will show the current settings and ask for
 confirmation of the image to be built.
@@ -138,7 +138,7 @@ generated `start_tim.sh` shell script so the container can directly
 
 The `TIMImage_builder.sh` execution will create 2 scripts:
 
-- **start_tim9.7.0.sh**: This script will start the docker container as
+- **start_tim10.2.sh**: This script will start the docker container as
   per the name.  
 
   _Note: in *secured* mode, the configured SPAN interface will be
@@ -150,7 +150,7 @@ The `TIMImage_builder.sh` execution will create 2 scripts:
    * In case it already exists, the existing instance will be started
      and networking setup according to request.
 
-- **tim9.7.0_shell.sh**: This one will drop you to a shell directly inside
+- **tim10.2.0_shell.sh**: This one will drop you to a shell directly inside
   the running container
   
 The TIM Container will create various directories under the user's home
@@ -189,7 +189,7 @@ tim10.1 to tim10.3:
 
 ## Debugging and Troubleshooting
 Troubleshooting needs to be done as on a regular TIM.  
-_Note: for entering the TIM Container, use the provided `tim9.7.0_shell.sh` script._
+_Note: for entering the TIM Container, use the provided `tim10.2.0_shell.sh` script._
 
 
 ## Security
